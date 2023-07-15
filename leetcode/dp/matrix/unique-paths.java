@@ -4,31 +4,26 @@ class Solution {
 
     public int uniquePaths(int m, int n) {
         // two options: go right, go down
-        // have 2d array of -1 if not known possible options from there, number if yk how many ways u can exit
-        // answer will be max ways from the right box + max ways from the down box
-        int cache[][] = new int[100][100];
-        for (int i=0;i<100;i++){
-            Arrays.fill(cache[i],-1);
-        }
+        // dp cache now represents ways from 0,0 TO x,y -> NOT unique paths from that point
         if (m ==1 || n==1){
-            return 1;
-        }
-        return helper(m,n,1,0, cache) + helper(m,n,0,1, cache);
-
-    }
-
-    public int helper(int m, int n, int x, int y, int[][] cache){
-        if ((x==m-1) || y==n-1){
-            return 1;
-        }
+            return 1;}
+        int cache[][] = new int[m][n];
+            
         
-        if (cache[x][y] != -1){
-            return cache[x][y];
-        }
-        cache[x][y] = helper(m,n,x+1,y,cache) + helper(m,n,x,y+1,cache);
-        return cache[x][y];
-    }
 
+        Arrays.fill(cache[0],1);
+        for (int k=0;k<m;k++){
+            cache[k][0] = 1;
+        }
+
+        for (int i=1; i<m;i++){
+            for (int j = 1; j<n;j++){
+                cache[i][j] = cache[i-1][j] + cache[i][j-1];
+            }
+        }
+        return cache[m-1][n-1];
+
+    }
 
     
 }
